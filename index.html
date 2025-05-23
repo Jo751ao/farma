@@ -13,9 +13,10 @@
         /* Estilos para o layout da tabela periódica */
         .periodic-table-grid {
             display: grid;
-            grid-template-columns: repeat(18, minmax(60px, 1fr)); /* 18 colunas */
-            grid-template-rows: repeat(9, minmax(60px, auto)); /* 7 períodos + 2 para Lantanídeos/Actinídeos */
-            gap: 8px; /* Espaçamento entre os elementos */
+            /* Definindo colunas com tamanho fixo mínimo e flexível para preencher o espaço */
+            grid-template-columns: repeat(18, minmax(55px, 1fr)); /* Reduzido levemente para melhor ajuste */
+            grid-template-rows: repeat(9, minmax(55px, auto)); /* 7 períodos + 2 para Lantanídeos/Actinídeos */
+            gap: 6px; /* Espaçamento entre os elementos */
             width: 100%;
             max-width: 1200px; /* Limita a largura para melhor visualização */
             margin: 0 auto;
@@ -166,6 +167,53 @@
             border-radius: 0.5rem; /* rounded-lg */
             color: #64748b; /* gray-500 */
             font-size: 0.875rem; /* text-sm */
+        }
+
+        /* Estilo para garantir que o texto do tile não seja cortado */
+        .element-tile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%; /* Garante que o conteúdo ocupe todo o espaço do botão */
+            width: 100%;
+            padding: 2px; /* Pequeno padding para evitar que o texto encoste nas bordas */
+            box-sizing: border-box; /* Inclui padding na largura/altura total */
+        }
+        .element-tile-symbol {
+            font-size: 1.8rem; /* Ajustado para caber melhor */
+            line-height: 1; /* Reduz o espaçamento entre linhas */
+            margin-bottom: 2px;
+        }
+        .element-tile-name {
+            font-size: 0.65rem; /* Ajustado para caber melhor */
+            line-height: 1;
+            white-space: nowrap; /* Evita quebra de linha */
+            overflow: hidden; /* Esconde o que não cabe */
+            text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+            max-width: 100%; /* Garante que o nome não transborde */
+        }
+        .element-tile-number, .element-tile-mass {
+            font-size: 0.6rem; /* Tamanho menor para número e massa */
+            line-height: 1;
+        }
+
+        /* Ajustes para telas menores */
+        @media (max-width: 768px) {
+            .periodic-table-grid {
+                grid-template-columns: repeat(18, minmax(40px, 1fr));
+                grid-template-rows: repeat(9, minmax(40px, auto));
+                gap: 4px;
+            }
+            .element-tile-symbol {
+                font-size: 1.5rem;
+            }
+            .element-tile-name {
+                font-size: 0.55rem;
+            }
+            .element-tile-number, .element-tile-mass {
+                font-size: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -1472,10 +1520,12 @@
                 transition-all duration-200 transform hover:scale-105 active:scale-95
                 w-auto h-auto aspect-square flex-shrink-0 ${className}`} // Adiciona a classe de posição aqui
             >
-              <span className="absolute top-1 left-1 text-xs opacity-80">{element.number}</span>
-              <span className="text-2xl sm:text-3xl font-bold">{element.symbol}</span>
-              <span className="text-xs sm:text-sm mt-1 truncate w-full px-1">{element.name}</span>
-              <span className="absolute bottom-1 right-1 text-xs opacity-80">{element.atomic_mass.split('.')[0]}</span>
+                <div className="element-tile-content">
+                    <span className="absolute top-1 left-1 element-tile-number">{element.number}</span>
+                    <span className="element-tile-symbol">{element.symbol}</span>
+                    <span className="element-tile-name">{element.name}</span>
+                    <span className="absolute bottom-1 right-1 element-tile-mass">{element.atomic_mass.split('.')[0]}</span>
+                </div>
             </button>
           );
         };

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoSUS – Saúde, Terra e Bem-Estar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        susBlue: '#0074C1',
+                        susGreen: '#33A852',
+                        neutralLightGray: '#F5F5F5',
+                        neutralBeige: '#FAFAFA',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'], // Using Inter as a clear sans-serif font
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Sticky header background and shadow */
+        .sticky-header {
+            background-color: #FFFFFF; /* White background for header */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+        /* Custom styles for rounded elements and soft shadows */
+        .card {
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+        }
+        /* Custom styles for buttons */
+        .btn-primary {
+            background-color: #0074C1; /* susBlue */
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #005a9c; /* Darker blue on hover */
+        }
+        .btn-secondary {
+            background-color: #33A852; /* susGreen */
+            color: #FFFFFF;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            transition: background-color 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: #2a8b42; /* Darker green on hover */
+        }
+        .option-button {
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            text-align: left;
+            width: 100%;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .option-button:hover:not(.correct):not(.incorrect) {
+            background-color: #d0d0d0;
+            transform: translateY(-2px);
+        }
+        .option-button.correct {
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green */
+            border: 2px solid #28a745;
+        }
+        .option-button.incorrect {
+            background-color: #f8d7da; /* Light red */
+            color: #721c24; /* Dark red */
+            border: 2px solid #dc3545;
+        }
+        .option-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-neutralBeige">
+
+    <header class="sticky top-0 z-50 py-4 px-6 md:px-12 sticky-header">
+        <nav class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://i.pinimg.com/736x/9a/8d/86/9a8d86b49a90df53795b3563caf899a7.jpg" alt="Símbolo da Farmácia" class="h-12 w-12 mr-4 rounded-lg shadow-md object-contain">
+                <a href="#home" class="text-3xl font-bold text-susBlue">GeoSUS</a>
+            </div>
+            
+            <div class="flex items-center flex-col md:flex-row mt-4 md:mt-0">
+                <img src="https://fametro.edu.br/wp-content/uploads/2022/02/Logo600.png" alt="Logo da Fametro" class="h-12 mr-8 rounded-lg shadow-md object-contain">
+                <ul class="flex flex-wrap justify-center md:justify-end space-x-4 md:space-x-8">
+                    <li><a href="#home" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Início</a></li>
+                    <li><a href="#benefits" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Benefícios</a></li>
+                    <li><a href="#clay-types" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Tipos de Argila</a></li>
+                    <li><a href="#geotherapy-sus" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Geoterapia no SUS</a></li>
+                    <li><a href="#how-to-use" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Dicas e Segurança</a></li>
+                    <li><a href="#quiz" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Questionário</a></li>
+                    <li><a href="#references" class="text-gray-700 hover:text-susBlue transition-colors duration-300">Referências</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="relative bg-susBlue text-white py-20 md:py-32 flex items-center justify-center min-h-screen-75">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-fade-in-up">GeoSUS – Saúde, Terra e Bem-Estar</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 animate-fade-in-up delay-200">
+                A Geoterapia é uma prática terapêutica que utiliza recursos naturais, especialmente a argila, para promover saúde, bem-estar e equilíbrio. Embora uma técnica milenar, ela permanece altamente relevante hoje, com estudos modernos confirmando seus benefícios físicos, emocionais e estéticos. O uso medicinal da argila representa um cuidado que combina saberes tradicionais, sustentabilidade e promoção da saúde, fortalecendo a conexão entre as pessoas e os recursos naturais.
+            </p>
+            <img src="https://placehold.co/600x300/F5F5F5/0074C1?text=Argila+e+Natureza" alt="Ilustração de argila e elementos da natureza" class="mx-auto rounded-xl shadow-lg mb-10 max-w-full h-auto">
+            <a href="#benefits" class="btn-primary inline-block animate-fade-in-up delay-400">Explore os Benefícios</a>
+        </div>
+    </section>
+
+    <section id="benefits" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-susBlue mb-12">Benefícios da Geoterapia e Argiloterapia</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">🌿</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Desintoxicação</h3>
+                    <p class="text-gray-700">Remove toxinas, impurezas e oleosidade da pele.</p>
+                </div>
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">🩹</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Anti-inflamatório</h3>
+                    <p class="text-gray-700">Ajuda a aliviar dores musculares, articulares e inflamações.</p>
+                </div>
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">✨</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Cicatrização e Regeneração</h3>
+                    <p class="text-gray-700">Estimula a recuperação dos tecidos e a cicatrização de feridas.</p>
+                </div>
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">🩸</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Melhora da Circulação</h3>
+                    <p class="text-gray-700">Aprimora o fluxo sanguíneo e linfático.</p>
+                </div>
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">🧘‍♀️</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Relaxamento e Bem-Estar</h3>
+                    <p class="text-gray-700">Promove o equilíbrio mental, emocional e físico.</p>
+                </div>
+                <div class="card bg-neutralLightGray p-6 text-center">
+                    <div class="text-susGreen text-5xl mb-4">💅</div> <h3 class="text-xl font-semibold text-susBlue mb-2">Apoio Estético</h3>
+                    <p class="text-gray-700">Útil em tratamentos para acne, celulite, flacidez, psoríase e manchas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="clay-types" class="py-16 md:py-24 bg-neutralBeige">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-susBlue mb-12">Tipos de Argila e Seus Usos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="card bg-white p-6 flex flex-col md:flex-row items-center">
+                    <div class="w-24 h-24 rounded-full bg-yellow-400 flex-shrink-0 mr-6 mb-4 md:mb-0 shadow-inner"></div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-susBlue mb-2">Argila Amarela</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Rica em sílica.</li>
+                            <li>Estimula a produção de colágeno.</li>
+                            <li>Melhora a firmeza da pele, reduz celulite e flacidez.</li>
+                            <li>Ideal para revitalizar peles cansadas e envelhecidas.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 flex flex-col md:flex-row items-center">
+                    <div class="w-24 h-24 rounded-full bg-gray-800 flex-shrink-0 mr-6 mb-4 md:mb-0 shadow-inner"></div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-susBlue mb-2">Argila Preta</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Desintoxicante natural.</li>
+                            <li>Combate acne, inflamações e sinais de envelhecimento.</li>
+                            <li>Propriedades anti-inflamatórias, antioxidantes e cicatrizantes.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 flex flex-col md:flex-row items-center">
+                    <div class="w-24 h-24 rounded-full bg-green-600 flex-shrink-0 mr-6 mb-4 md:mb-0 shadow-inner"></div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-susBlue mb-2">Argila Verde</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Efeito adstringente, tonificante e secativo.</li>
+                            <li>Controla a oleosidade da pele.</li>
+                            <li>Reduz poros e ilumina a pele.</li>
+                            <li>Perfeita para peles oleosas, acneicas e com manchas.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card bg-white p-6 flex flex-col md:flex-row items-center">
+                    <div class="w-24 h-24 rounded-full bg-pink-400 flex-shrink-0 mr-6 mb-4 md:mb-0 shadow-inner"></div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-susBlue mb-2">Argila Rosa</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-1">
+                            <li>Mistura de argila branca e vermelha.</li>
+                            <li>Suave, regeneradora, melhora a elasticidade.</li>
+                            <li>Promove cicatrização e suaviza linhas finas.</li>
+                            <li>Melhor para peles sensíveis, delicadas ou com tendência à vermelhidão.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="geotherapy-sus" class="py-16 md:py-24 bg-susBlue text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">Geoterapia no SUS</h2>
+            <p class="text-lg md:text-xl max-w-4xl mx-auto mb-10">
+                A Geoterapia é integrada ao Sistema Único de Saúde (SUS) por meio da Política Nacional de Práticas Integrativas e Complementares (PNPIC). Ela está disponível em algumas unidades de saúde como uma abordagem complementar e holística que promove o bem-estar físico, emocional e social. A argiloterapia no SUS valoriza os saberes ancestrais, a sustentabilidade e o cuidado humanizado, proporcionando uma alternativa natural e acessível de saúde para a população.
+            </p>
+            <a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/p/pics" target="_blank" rel="noopener noreferrer" class="btn-secondary inline-block">
+                Saiba Mais Sobre PICS – Ministério da Saúde
+            </a>
+        </div>
+    </section>
+
+    <section id="how-to-use" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-susBlue mb-12">Como Usar a Argila – Dicas e Segurança</h2>
+            <div class="max-w-3xl mx-auto bg-neutralLightGray p-8 rounded-xl shadow-md">
+                <ul class="list-disc list-inside text-gray-700 space-y-4 text-lg">
+                    <li><strong class="text-susBlue">Use recipientes não metálicos:</strong> Prefira vidro, cerâmica ou plástico para misturar a argila.</li>
+                    <li><strong class="text-susBlue">Prepare a pasta:</strong> Misture a argila com água filtrada ou mineral até formar uma pasta homogênea.</li>
+                    <li><strong class="text-susBlue">Aplique na pele limpa:</strong> Espalhe na área desejada (rosto, corpo ou região específica).</li>
+                    <li><strong class="text-susBlue">Tempo de ação:</strong> Deixe agir por 20–30 minutos, evitando que seque completamente (pulverize água se necessário).</li>
+                    <li><strong class="text-susBlue">Enxágue:</strong> Remova com água corrente.</li>
+                    <li><strong class="text-susBlue">Finalize:</strong> Aplique um hidratante após o enxágue.</li>
+                </ul>
+                <div class="mt-8 p-6 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded-lg">
+                    <p class="font-semibold mb-2">Nota Importante:</p>
+                    <p>É recomendado buscar orientação de um profissional de saúde, especialmente em casos de pele sensível, lesões ou condições específicas. No sistema SUS, a argiloterapia é aplicada sob supervisão profissional.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="py-16 md:py-24 bg-neutralBeige">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-susBlue mb-12">Questionário Interativo</h2>
+            <div id="quiz-container" class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                <div id="question-display" class="text-lg mb-6">
+                    </div>
+                <div class="flex flex-col md:flex-row justify-between items-center mt-6 space-y-4 md:space-y-0 md:space-x-4">
+                    <button id="next-question-btn" class="btn-primary w-full md:w-auto" style="display: none;">Próxima Pergunta</button>
+                    <button id="restart-quiz-btn" class="btn-secondary w-full md:w-auto" style="display: none;">Reiniciar Questionário</button>
+                </div>
+                <div id="quiz-feedback" class="mt-4 text-center text-lg font-semibold"></div>
+                <div id="quiz-score" class="mt-4 text-center text-xl font-bold text-susBlue"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="references" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-susBlue mb-12">Fontes e Referências</h2>
+            <div class="max-w-3xl mx-auto bg-neutralLightGray p-8 rounded-xl shadow-md">
+                <ul class="list-disc list-inside text-gray-700 space-y-3 text-lg">
+                    <li>Revista Homem, Espaço e Tempo, nº 14, volume 1, p. 65-78, Jan/Dez 2020.</li>
+                    <li>Política Nacional de Práticas Integrativas e Complementares (PNPIC) – Ministério da Saúde do Brasil.</li>
+                    <li>Dados adicionais de literatura científica e materiais oficiais das PICS.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-susBlue text-white py-8 text-center">
+        <div class="container mx-auto px-6">
+            <p class="text-lg mb-4">GeoSUS – Conectando Saúde, Natureza e Bem-Estar. Para uma saúde integrativa, acessível e sustentável.</p>
+            <p class="text-md mb-2">Professora Orientadora: Elyciane Guimarães</p>
+            <p class="text-md mb-2">Curso de Farmácia - 5° Período B</p>
+            <p class="text-md mb-4">Alunos: João Antonio, Miriã Alves, Polyanna Alvarenga, Alice Martins e Jeovana Glenda</p>
+            <p class="text-sm">&copy; 2024 GeoSUS. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "1. O que é Geoterapia?",
+                options: ["A) Uma prática terapêutica que utiliza música para relaxamento.", "B) Uma prática terapêutica que utiliza recursos naturais, especialmente a argila.", "C) Um tipo de exercício físico para fortalecimento muscular."],
+                answer: "B"
+            },
+            {
+                question: "2. Qual recurso natural é mais utilizado na geoterapia?",
+                options: ["A) Água de nascente.", "B) Argila.", "C) Plantas medicinais."],
+                answer: "B"
+            },
+            {
+                question: "3. A geoterapia faz parte de qual política do SUS?",
+                options: ["A) Política Nacional de Humanização (PNH).", "B) Política Nacional de Práticas Integrativas e Complementares (PNPIC).", "C) Política Nacional de Atenção Básica (PNAB)."],
+                answer: "B"
+            },
+            {
+                question: "4. Qual tipo de argila é rica em sílica e estimula a produção de colágeno, sendo ideal para peles cansadas e envelhecidas?",
+                options: ["A) Argila Verde.", "B) Argila Preta.", "C) Argila Amarela."],
+                answer: "C"
+            },
+            {
+                question: "5. Qual argila tem efeito adstringente, tonificante e secativo, sendo perfeita para peles oleosas e acneicas?",
+                options: ["A) Argila Rosa.", "B) Argila Verde.", "C) Argila Amarela."],
+                answer: "B"
+            },
+            {
+                question: "6. Qual argila é uma mistura de argila branca e vermelha, sendo suave e ideal para peles sensíveis?",
+                options: ["A) Argila Amarela.", "B) Argila Preta.", "C) Argila Rosa."],
+                answer: "C"
+            },
+            {
+                question: "7. Por quanto tempo a argila deve agir na pele durante a aplicação?",
+                options: ["A) 5 a 10 minutos.", "B) 20 a 30 minutos.", "C) 60 minutos ou mais."],
+                answer: "B"
+            },
+            {
+                question: "8. É recomendado usar recipientes de qual material para misturar a argila?",
+                options: ["A) Metal.", "B) Plástico, vidro ou cerâmica.", "C) Madeira."],
+                answer: "B"
+            },
+            {
+                question: "9. A argila é eficaz na desintoxicação da pele?",
+                options: ["A) Sim, ajuda a remover toxinas e impurezas.", "B) Não, seu uso é apenas para hidratação.", "C) Apenas para cabelos, não para a pele."],
+                answer: "A"
+            },
+            {
+                question: "10. A geoterapia no SUS valoriza saberes ancestrais e sustentabilidade?",
+                options: ["A) Sim, valoriza ambos.", "B) Não, apenas a sustentabilidade.", "C) Não, apenas os saberes ancestrais."],
+                answer: "A"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredCurrentQuestion = false;
+
+        const quizContainer = document.getElementById('quiz-container');
+        const questionDisplay = document.getElementById('question-display');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const quizFeedback = document.getElementById('quiz-feedback');
+        const quizScore = document.getElementById('quiz-score');
+
+        function renderQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                const q = questions[currentQuestionIndex];
+                questionDisplay.innerHTML = `
+                    <p class="font-bold text-susBlue mb-4">${q.question}</p>
+                    <div class="flex flex-col space-y-3" id="options-container">
+                        ${q.options.map((option, index) => `
+                            <button class="option-button" data-option="${String.fromCharCode(65 + index)}">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+                document.querySelectorAll('.option-button').forEach(button => {
+                    button.addEventListener('click', checkAnswer);
+                });
+                nextQuestionBtn.style.display = 'none';
+                quizFeedback.textContent = '';
+                answeredCurrentQuestion = false;
+            } else {
+                showResult();
+            }
+        }
+
+        function checkAnswer(event) {
+            if (answeredCurrentQuestion) return;
+
+            answeredCurrentQuestion = true;
+            const selectedOption = event.target;
+            const selectedAnswer = selectedOption.dataset.option;
+            const correctAnswer = questions[currentQuestionIndex].answer;
+            const optionsContainer = document.getElementById('options-container');
+
+            Array.from(optionsContainer.children).forEach(button => {
+                button.disabled = true;
+                if (button.dataset.option === correctAnswer) {
+                    button.classList.add('correct');
+                } else if (button.dataset.option === selectedAnswer) {
+                    button.classList.add('incorrect');
+                }
+            });
+
+            if (selectedAnswer === correctAnswer) {
+                score++;
+                quizFeedback.textContent = 'Correto!';
+                quizFeedback.classList.remove('text-red-600');
+                quizFeedback.classList.add('text-green-600');
+            } else {
+                quizFeedback.textContent = 'Incorreto. A resposta correta é ' + correctAnswer + '.';
+                quizFeedback.classList.remove('text-green-600');
+                quizFeedback.classList.add('text-red-600');
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                nextQuestionBtn.style.display = 'block';
+            } else {
+                nextQuestionBtn.style.display = 'none';
+                setTimeout(showResult, 1000);
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            renderQuestion();
+        }
+
+        function showResult() {
+            questionDisplay.innerHTML = `
+                <p class="text-2xl font-bold text-susBlue mb-4">Questionário Concluído!</p>
+                <p class="text-xl">Você acertou ${score} de ${questions.length} perguntas.</p>
+            `;
+            quizFeedback.textContent = '';
+            quizScore.textContent = '';
+            nextQuestionBtn.style.display = 'none';
+            restartQuizBtn.style.display = 'block';
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            restartQuizBtn.style.display = 'none';
+            renderQuestion();
+        }
+
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        restartQuizBtn.addEventListener('click', restartQuiz);
+
+        renderQuestion();
+    </script>
+
+</body>
+</html>

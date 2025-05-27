@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela Periódica Interativa com Aplicações Médicas e Farmacêuticas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <style>
@@ -182,22 +182,25 @@
             box-sizing: border-box;
         }
         .element-tile-symbol {
-            font-size: 1.8rem;
+            font-size: 1.5rem; /* Ajustado para caber o nome */
             line-height: 1;
-            margin-bottom: 2px;
+            margin-bottom: 0px; /* Reduzido para dar espaço ao nome */
         }
         .element-tile-name {
-            font-size: 0.65rem;
+            font-size: 0.55rem; /* Ajustado para caber o nome */
             line-height: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100%;
-            font-weight: 600; /* Revertido para 600 */
+            font-weight: 600;
         }
-        .element-tile-number, .element-tile-mass {
-            font-size: 0.6rem;
-            line-height: 1;
+        /* Estilo para o texto da categoria no painel de detalhes */
+        .category-text-stroke {
+            font-weight: 800; /* Extra bold para a borda */
+            -webkit-text-stroke: 0.5px black; /* Borda preta para navegadores WebKit */
+            text-stroke: 0.5px black; /* Borda preta para outros navegadores */
+            color: white; /* Preenchimento branco */
         }
 
         /* Ajustes para telas menores */
@@ -208,13 +211,13 @@
                 gap: 4px;
             }
             .element-tile-symbol {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
             .element-tile-name {
-                font-size: 0.55rem;
+                font-size: 0.45rem;
             }
             .element-tile-number, .element-tile-mass {
-                font-size: 0.5rem;
+                font-size: 0.4rem;
             }
         }
     </style>
@@ -1020,7 +1023,7 @@
                         return {
                             pharmaceutical_applications: [{ type: 'Diagnóstico', description: 'Compostos de gadolínio são os agentes de contraste mais comuns em ressonância magnética (MRI), melhorando a visibilidade de tecidos e lesões.', icon: 'Microscope' }],
                             drug_linkages: [{ drug_name: 'Gadopentetato de Dimeglumina', generic_name: 'Magnevist', mechanism: 'Aumenta o relaxamento dos prótons de água, resultando em um sinal de MRI mais forte e melhor contraste da imagem.', icon: 'Eye' }],
-                            references: ['DrugBank: Gadopentetate Dimeglumina (DB00305).']
+                            references: ['DrugBank: Gadopentetate Dimeglumine (DB00305).']
                         };
                     case 65:
                         return {
@@ -2047,7 +2050,7 @@
         }
 
 
-        // --- Event Listeners Globais ---
+        // --- Eventos Globais ---
         document.addEventListener('DOMContentLoaded', () => {
             rootDiv = document.getElementById('root');
             userInfoTextSpan = document.getElementById('user-info-text');

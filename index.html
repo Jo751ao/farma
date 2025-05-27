@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabela Periódica Interativa com Aplicações Médicas e Farmacêuticas</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
     <style>
@@ -15,8 +15,9 @@
         /* Estilos para o layout da tabela periódica usando CSS Grid */
         .periodic-table-grid {
             display: grid;
-            grid-template-columns: repeat(18, minmax(55px, 1fr));
-            grid-template-rows: repeat(9, minmax(55px, auto));
+            /* Aumenta o tamanho mínimo e flexível dos quadrados */
+            grid-template-columns: repeat(18, minmax(70px, 1fr));
+            grid-template-rows: repeat(9, minmax(70px, auto));
             gap: 6px;
             width: 100%;
             max-width: 1200px;
@@ -182,42 +183,42 @@
             box-sizing: border-box;
         }
         .element-tile-symbol {
-            font-size: 1.5rem; /* Ajustado para caber o nome */
+            font-size: 1.8rem; /* Ajustado para caber o nome */
             line-height: 1;
             margin-bottom: 0px; /* Reduzido para dar espaço ao nome */
         }
         .element-tile-name {
-            font-size: 0.55rem; /* Ajustado para caber o nome */
+            font-size: 0.65rem; /* Ajustado para caber o nome */
             line-height: 1;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 100%;
-            font-weight: 600;
-        }
-        /* Estilo para o texto da categoria no painel de detalhes */
-        .category-text-stroke {
-            font-weight: 800; /* Extra bold para a borda */
-            -webkit-text-stroke: 0.5px black; /* Borda preta para navegadores WebKit */
-            text-stroke: 0.5px black; /* Borda preta para outros navegadores */
+            font-weight: 900; /* Extra bold para a borda */
+            -webkit-text-stroke: 1px black; /* Borda preta para navegadores WebKit */
+            text-stroke: 1px black; /* Borda preta para outros navegadores */
             color: white; /* Preenchimento branco */
+        }
+        .element-tile-number, .element-tile-mass {
+            font-size: 0.6rem; /* Ajustado para caber o nome */
+            line-height: 1;
         }
 
         /* Ajustes para telas menores */
         @media (max-width: 768px) {
             .periodic-table-grid {
-                grid-template-columns: repeat(18, minmax(40px, 1fr));
-                grid-template-rows: repeat(9, minmax(40px, auto));
+                grid-template-columns: repeat(18, minmax(45px, 1fr)); /* Aumentado para 45px */
+                grid-template-rows: repeat(9, minmax(45px, auto)); /* Aumentado para 45px */
                 gap: 4px;
             }
             .element-tile-symbol {
-                font-size: 1.2rem;
+                font-size: 1.4rem; /* Ajustado para caber o nome */
             }
             .element-tile-name {
-                font-size: 0.45rem;
+                font-size: 0.5rem; /* Ajustado para caber o nome */
             }
             .element-tile-number, .element-tile-mass {
-                font-size: 0.4rem;
+                font-size: 0.45rem;
             }
         }
     </style>
@@ -811,7 +812,7 @@
                         };
                     case 29:
                         return {
-                            pharmaceutical_applications: [{ type: 'Nutrição & Suplementos', description: 'Mineral essencial para a formação de glóbulos vermelhos, saúde óssea, função imunológica e metabolismo do ferro.', icon: 'Leaf' }],
+                            pharmaceutical_applications: [{ type: 'Nutrição & Suplementos', description: 'Mineral essencial para o formação de glóbulos vermelhos, saúde óssea, função imunológica e metabolismo do ferro.', icon: 'Leaf' }],
                             drug_linkages: [{ drug_name: 'Gluconato de Cobre', generic_name: 'Cobre', mechanism: 'Fornece cobre para cofatores enzimáticos, essencial para várias funções biológicas.', icon: 'Sparkles' }],
                             references: ['National Institutes of Health (NIH) - Office of Dietary Supplements. (2021). Copper Fact Sheet for Health Professionals.']
                         };
@@ -1059,7 +1060,7 @@
                         return {
                             pharmaceutical_applications: [{ type: 'Pesquisa', description: 'Investigado em lasers de fibra para cirurgia e em biossensores devido às suas propriedades ópticas.', icon: 'Microscope' }],
                             drug_linkages: [],
-                            references: ['Bünzli, J. C. G., & Piguet, C. (2005). Lanthanide light conversion devices. Chemical Reviews, 105(3), 1049-1092.']
+                            references: ['Bünzli, J. C. G., & Piguet, C. (2005). Lanthanide luminescence for biomedical applications. Chemical Society Reviews, 39(8), 3049-3071.']
                         };
                     case 71:
                         return {
@@ -1071,7 +1072,7 @@
                         return {
                             pharmaceutical_applications: [{ type: 'Radioterapia', description: 'Actínio-225 é um radioisótopo alfa-emissor com grande potencial em terapia alfa direcionada para o tratamento de cânceres metastáticos, como câncer de próstase e leucemia.', icon: 'Radiation' }],
                             drug_linkages: [{ drug_name: 'Actínio-225 PSMA', generic_name: 'Ac-255 PSMA', mechanism: 'Liga-se ao antígeno de membrana específico da próstata (PSMA) em células de câncer de próstata, liberando partículas alfa que causam danos celulares letais.', icon: 'HandCoins' }],
-                            references: ['Krishnan, S., et al. (2018). Actinium-225: a promising radionuclide for targeted alpha therapy. Journal of Labelled Compounds and Radiopharmaceuticals, 61(10), 617-626.']
+                            references: ['Krishnan, S., et al. (2018). Actinium-255: a promising radionuclide for targeted alpha therapy. Journal of Labelled Compounds and Radiopharmaceuticals, 61(10), 617-626.']
                         };
                     case 90:
                         return {
@@ -1360,7 +1361,7 @@
         function openElementDetail(element) {
             selectedElement = element;
             // Apply category-text-stroke class to the category span in detail title
-            detailTitle.innerHTML = `${element.name} (${element.symbol}) <span class="ml-3 text-lg font-normal py-1 px-3 rounded-full ${categoryColors[element.category] || categoryColors['Desconhecido']} category-text-stroke"> ${element.category}</span>`;
+            detailTitle.innerHTML = `${element.name} (${element.symbol}) <span class="ml-3 text-lg font-normal py-1 px-3 rounded-full ${categoryColors[element.category] || categoryColors['Desconhecido']}"> ${element.category}</span>`;
 
             scientificDataSection.innerHTML = `
                 <p><span class="font-medium">Número Atômico:</span> ${element.number}</p>

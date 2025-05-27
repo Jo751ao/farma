@@ -1010,7 +1010,7 @@
                     case 62:
                         return {
                             pharmaceutical_applications: [{ type: 'Radioterapia', description: 'Samário-153 é usado em radioterapia para aliviar a dolor óssea em pacientes com câncer metastático.', icon: 'Radiation' }],
-                            drug_linkages: [{ drug_name: 'Samário-153 Lexidronam', generic_name: 'Quadramet', mechanism: 'Emite partículas beta que se acumulam em áreas de metástases ósseas, proporcionando alívio da dor.', icon: 'Syringe' }],
+                            drug_linkages: [{ drug_name: 'Samário-153 Lexidronam', generic_name: 'Quadramet', mechanism: 'Emite partículas beta que se acumulam em áreas de metástases ósseas, proporcionando alívio da dolor.', icon: 'Syringe' }],
                             references: ['DrugBank: Samarium Sm 153 Lexidronam (DB09146).']
                         };
                     case 63:
@@ -1023,7 +1023,7 @@
                         return {
                             pharmaceutical_applications: [{ type: 'Diagnóstico', description: 'Compostos de gadolínio são os agentes de contraste mais comuns em ressonância magnética (MRI), melhorando a visibilidade de tecidos e lesões.', icon: 'Microscope' }],
                             drug_linkages: [{ drug_name: 'Gadopentetato de Dimeglumina', generic_name: 'Magnevist', mechanism: 'Aumenta o relaxamento dos prótons de água, resultando em um sinal de MRI mais forte e melhor contraste da imagem.', icon: 'Eye' }],
-                            references: ['DrugBank: Gadopentetate Dimeglumine (DB00305).']
+                            references: ['DrugBank: Gadopentetate Dimeglumina (DB00305).']
                         };
                     case 65:
                         return {
@@ -1069,7 +1069,7 @@
                         };
                     case 89:
                         return {
-                            pharmaceutical_applications: [{ type: 'Radioterapia', description: 'Actínio-225 é um radioisótopo alfa-emissor com grande potencial em terapia alfa direcionada para o tratamento de cânceres metastáticos, como câncer de próstata e leucemia.', icon: 'Radiation' }],
+                            pharmaceutical_applications: [{ type: 'Radioterapia', description: 'Actínio-225 é um radioisótopo alfa-emissor com grande potencial em terapia alfa direcionada para o tratamento de cânceres metastáticos, como câncer de próstase e leucemia.', icon: 'Radiation' }],
                             drug_linkages: [{ drug_name: 'Actínio-225 PSMA', generic_name: 'Ac-255 PSMA', mechanism: 'Liga-se ao antígeno de membrana específico da próstata (PSMA) em células de câncer de próstata, liberando partículas alfa que causam danos celulares letais.', icon: 'HandCoins' }],
                             references: ['Krishnan, S., et al. (2018). Actinium-225: a promising radionuclide for targeted alpha therapy. Journal of Labelled Compounds and Radiopharmaceuticals, 61(10), 617-626.']
                         };
@@ -1359,8 +1359,8 @@
 
         function openElementDetail(element) {
             selectedElement = element;
-            // Revert category-text-stroke class to the category span in detail title
-            detailTitle.innerHTML = `${element.name} (${element.symbol}) <span class="ml-3 text-lg font-normal py-1 px-3 rounded-full ${categoryColors[element.category] || categoryColors['Desconhecido']}"> ${element.category}</span>`;
+            // Apply category-text-stroke class to the category span in detail title
+            detailTitle.innerHTML = `${element.name} (${element.symbol}) <span class="ml-3 text-lg font-normal py-1 px-3 rounded-full ${categoryColors[element.category] || categoryColors['Desconhecido']} category-text-stroke"> ${element.category}</span>`;
 
             scientificDataSection.innerHTML = `
                 <p><span class="font-medium">Número Atômico:</span> ${element.number}</p>

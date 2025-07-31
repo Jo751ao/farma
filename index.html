@@ -115,14 +115,12 @@
 
             <!-- View: Lições -->
             <div id="lessons-view">
-                <div id="progress-panel" class="bg-white rounded-lg shadow-md p-6 mb-8"></div>
-                <div id="review-panel" class="bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg p-4 mb-8"></div>
                 <div class="bg-white rounded-lg shadow-md p-4 mb-8 space-y-4">
                     <div class="flex items-center gap-4">
                         <label for="level-select" class="font-semibold text-gray-700">Seu Nível:</label>
                         <div class="relative w-full max-w-xs">
                             <select id="level-select" class="custom-select block w-full">
-                                <option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
+                                <option value="A1">A1</option><option value="A2">A2</option><option value="B1" selected>B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -140,7 +138,7 @@
                 </div>
                 <main id="lesson-content-area" class="bg-white rounded-lg shadow-md min-h-[400px]">
                     <div id="lesson-content" class="p-6 sm:p-8 text-center flex items-center justify-center h-full">
-                        <p class="text-gray-400 text-lg">Selecione uma categoria para começar sua jornada.</p>
+                        <p class="text-gray-400 text-lg">Selecione uma categoria para começar a sua jornada.</p>
                     </div>
                 </main>
             </div>
@@ -157,7 +155,7 @@
                             <label for="convo-level-select" class="block text-sm font-medium text-gray-700 mb-1">Nível da Conversa</label>
                             <div class="relative w-full">
                                 <select id="convo-level-select" class="custom-select w-full">
-                                    <option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
+                                    <option value="A1">A1</option><option value="A2">A2</option><option value="B1" selected>B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -205,7 +203,7 @@
                             <label for="flashcard-level-select" class="font-semibold text-gray-700">Nível:</label>
                             <div class="relative">
                                 <select id="flashcard-level-select" class="custom-select">
-                                    <option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option>
+                                    <option value="A1">A1</option><option value="A2">A2</option><option value="B1" selected>B1</option>
                                     <option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
@@ -244,13 +242,13 @@
             <div id="quiz-view" class="view-hidden">
                 <div id="quiz-config-panel" class="bg-white p-6 rounded-lg shadow-md">
                     <div class="text-center mb-6">
-                        <h2 class="text-xl font-semibold">Teste seus conhecimentos!</h2>
+                        <h2 class="text-xl font-semibold">Teste os seus conhecimentos!</h2>
                         <p class="text-gray-600 mt-1">Escolha um nível para gerar um quiz com 7 perguntas aleatórias.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <div class="relative w-full sm:w-auto">
                             <select id="quiz-level-select" class="custom-select w-full">
-                                <option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option>
+                                <option value="A1">A1</option><option value="A2">A2</option><option value="B1" selected>B1</option>
                                 <option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700">
@@ -269,22 +267,8 @@
     <!-- Modal Container -->
     <div id="modal-container"></div>
 
-    <script type="module">
-        // --- MÓDULOS E CONFIGURAÇÃO INICIAL ---
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, where, doc, getDoc, setDoc, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
+    <script>
         // --- VARIÁVEIS GLOBAIS ---
-        let userProgress = null;
         let isLoading = false;
         const ALL_LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
         let tts = window.speechSynthesis;
@@ -305,10 +289,14 @@
         // --- FUNÇÕES GLOBAIS E DE INICIALIZAÇÃO ---
         
         async function callGeminiAPI(prompt, schema = null) {
-            // ATENÇÃO: A sua chave de API está inserida aqui.
-            // Para um site público, esta não é a forma mais segura.
-            // Considere usar variáveis de ambiente ou um backend para proteger a sua chave.
-            const apiKey = "AIzaSyCqPeLEeLVgEBl8seSmI5ng-32F-ItfrLc";
+            // **IMPORTANTE**: Insira a sua chave de API do Google AI Studio aqui.
+            const apiKey = "SUA_CHAVE_DE_API_AQUI"; // <-- SUBSTITUA ISTO PELA SUA CHAVE REAL
+
+            if (apiKey === "SUA_CHAVE_DE_API_AQUI") {
+                showErrorState("A chave de API não foi configurada. Por favor, edite o ficheiro index.html e adicione a sua chave.");
+                throw new Error("API Key not configured.");
+            }
+
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
             
             const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
@@ -321,7 +309,7 @@
             if (!response.ok) {
                 const errorBody = await response.json();
                 console.error("API Error Body:", errorBody);
-                throw new Error(`API Error: ${response.statusText}. Verifique a consola para mais detalhes.`);
+                throw new Error(`API Error: ${response.statusText}. Verifique a consola do navegador para mais detalhes.`);
             }
             
             const result = await response.json();
@@ -330,10 +318,9 @@
                 return result.candidates[0].content.parts[0].text;
             }
             
-            // Se a resposta não tiver candidatos (p.ex., por filtros de segurança), mostre uma mensagem útil.
             if (result.promptFeedback) {
                 console.error("Prompt Feedback:", result.promptFeedback);
-                throw new Error("A resposta foi bloqueada por filtros de segurança. Tente reformular o seu pedido.");
+                throw new Error("A resposta foi bloqueada pelos filtros de segurança da Google. Tente reformular o seu pedido.");
             }
             
             throw new Error("A resposta da IA não contém conteúdo válido.");
@@ -455,202 +442,28 @@
         const lessonNavButtons = document.querySelectorAll('.lesson-nav-btn');
         const lessonContentArea = document.getElementById('lesson-content-area');
         const levelSelect = document.getElementById('level-select');
-        const progressPanel = document.getElementById('progress-panel');
-        const reviewPanel = document.getElementById('review-panel');
         
         let currentLessonArea = '';
         let currentLesson = null;
-        let currentAssessment = null;
-        let assessmentScore = 0;
-        let currentQuestionIndex = 0;
         
-        function setupProgressListener(userId) {
-            const progressDocPath = `artifacts/${appId}/users/${userId}/progress/data`;
-            const progressDocRef = doc(db, progressDocPath);
-
-            onSnapshot(progressDocRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    userProgress = docSnap.data();
-                    if (!userProgress.streak) {
-                        userProgress.streak = { current: 0, longest: 0, lastStudyDate: null };
-                    }
-                } else {
-                    userProgress = {
-                        alunoId: userId, nivel: "A1", ultimo_topico: null,
-                        topicos_concluidos: [],
-                        estatisticas: { acertos: 0, erros: 0, xp: 0 },
-                        streak: { current: 0, longest: 0, lastStudyDate: null }
-                    };
-                    setDoc(progressDocRef, userProgress);
-                }
-                renderProgressPanel();
-                renderReviewPanel();
-                levelSelect.value = userProgress.nivel;
-                convoLevelSelect.value = userProgress.nivel;
-                updateConvoThemes();
-            });
-        }
-        
-        function renderProgressPanel() {
-            if (!userProgress) return;
-            const { nivel, estatisticas, streak } = userProgress;
-            const totalXpForNextLevel = 1000;
-            const xpPercentage = Math.min((estatisticas.xp % totalXpForNextLevel) / totalXpForNextLevel * 100, 100);
-            const currentStreak = streak ? streak.current : 0;
-
-            progressPanel.innerHTML = `
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-lg text-indigo-700">Nível ${nivel}</span>
-                        <div class="flex items-center space-x-4">
-                            <span class="font-semibold text-gray-600" data-tooltip="Pontos de Experiência">${estatisticas.xp} XP ⭐</span>
-                            <span class="font-semibold text-orange-500 flex items-center" data-tooltip="Dias seguidos de estudo">
-                                ${currentStreak} 🔥
-                            </span>
-                        </div>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar" style="width: ${xpPercentage}%"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-center text-sm">
-                        <div class="bg-green-50 p-2 rounded-lg"><span class="font-bold text-green-700">${estatisticas.acertos}</span> Acertos</div>
-                        <div class="bg-red-50 p-2 rounded-lg"><span class="font-bold text-red-700">${estatisticas.erros}</span> Erros</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderReviewPanel() {
-            if (!userProgress) return;
-            const topicsForReview = getTopicsForReview();
-            if (topicsForReview.length > 0) {
-                reviewPanel.classList.remove('hidden');
-                reviewPanel.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-yellow-800">Revisão Inteligente</p>
-                            <p class="text-sm text-yellow-700">Você tem ${topicsForReview.length} tópico(s) com dificuldade. Vamos reforçar?</p>
-                        </div>
-                        <button class="show-review-list-btn btn bg-yellow-400 text-yellow-900 hover:bg-yellow-500">Revisar Agora</button>
-                    </div>
-                `;
-            } else {
-                reviewPanel.classList.add('hidden');
-            }
-        }
-        
-        function getTopicsForReview() {
-            if (!userProgress || !userProgress.topicos_concluidos) return [];
-            return userProgress.topicos_concluidos.filter(t => t.resultado === '❌');
-        }
-
-        async function registerProgress(isCorrect) {
-            if (!userProgress || !currentLesson) return;
-            const now = new Date();
-            const todayStr = now.toISOString().slice(0, 10);
-            
-            if (isCorrect) {
-                userProgress.estatisticas.acertos += 1;
-                userProgress.estatisticas.xp += 10;
-            } else {
-                userProgress.estatisticas.erros += 1;
-                userProgress.estatisticas.xp += 5;
-            }
-
-            if (!userProgress.streak) {
-                userProgress.streak = { current: 0, longest: 0, lastStudyDate: null };
-            }
-            const lastDate = userProgress.streak.lastStudyDate;
-            if (lastDate !== todayStr) {
-                const yesterday = new Date(now);
-                yesterday.setDate(yesterday.getDate() - 1);
-                if (lastDate === yesterday.toISOString().slice(0, 10)) {
-                    userProgress.streak.current += 1;
-                } else {
-                    userProgress.streak.current = 1;
-                }
-                if (userProgress.streak.current > userProgress.streak.longest) {
-                    userProgress.streak.longest = userProgress.streak.current;
-                }
-                userProgress.streak.lastStudyDate = todayStr;
-            }
-
-            const lessonId = currentLesson.id || `AI-${Date.now()}`;
-            const existingTopicIndex = userProgress.topicos_concluidos.findIndex(t => t.id === lessonId);
-            
-            if (existingTopicIndex > -1) {
-                const topic = userProgress.topicos_concluidos[existingTopicIndex];
-                topic.tentativas = (topic.tentativas || 1) + 1;
-                if(isCorrect) topic.resultado = '✅';
-                topic.data = now.toISOString();
-            } else {
-                 userProgress.topicos_concluidos.push({
-                    id: lessonId, area: currentLessonArea, nivel: userProgress.nivel,
-                    resultado: isCorrect ? '✅' : '❌', data: now.toISOString(), tentativas: 1
-                });
-            }
-           
-            userProgress.ultimo_topico = { id: lessonId, area: currentLessonArea, data: now.toISOString() };
-            
-            const progressDocRef = doc(db, `artifacts/${appId}/users/${userProgress.alunoId}/progress/data`);
-            await setDoc(progressDocRef, userProgress, { merge: true });
-        }
-
-        async function loadLesson(forceReview = false) {
-            if (isLoading || !userProgress) return;
+        async function loadLesson() {
+            if (isLoading) return;
             if (!currentLessonArea) {
                 lessonContentDiv.innerHTML = `<p class="text-red-500">Por favor, selecione uma área de estudo.</p>`;
                 return;
             }
             isLoading = true;
-            showLoadingState('Analisando seu progresso...');
-            const level = userProgress.nivel;
+            showLoadingState('A gerar uma nova lição com IA...');
+            const level = levelSelect.value;
             try {
-                const result = await fetchManualLesson(level, currentLessonArea, forceReview);
-                if (result.status === 'found') {
-                    currentLesson = result.lesson;
-                    displayLesson(currentLesson);
-                } else if (result.status === 'all_completed') {
-                    await startAssessment(level);
-                } else {
-                    showLoadingState('Gerando uma nova lição com IA...');
-                    const aiLesson = await generateAILesson(level, currentLessonArea);
-                    currentLesson = aiLesson;
-                    displayLesson(aiLesson);
-                }
+                const aiLesson = await generateAILesson(level, currentLessonArea);
+                currentLesson = aiLesson;
+                displayLesson(aiLesson);
             } catch (error) {
                 console.error("Erro ao carregar lição:", error);
                 showErrorState(error.message);
             } finally {
                 isLoading = false;
-            }
-        }
-
-        async function fetchManualLesson(level, area, forceReview = false) {
-            const lessonsCollectionPath = `artifacts/${appId}/public/data/lessons`;
-            const lessonsRef = collection(db, lessonsCollectionPath);
-            const q = query(lessonsRef, where("nivel", "==", level), where("area", "==", area));
-            
-            const querySnapshot = await getDocs(q);
-            if (querySnapshot.empty) {
-                return { status: 'none_exist', lesson: null };
-            }
-
-            const todosOsTopicosDisponiveis = querySnapshot.docs.map(doc => doc.data());
-
-            if(forceReview){
-                const randomLesson = todosOsTopicosDisponiveis[Math.floor(Math.random() * todosOsTopicosDisponiveis.length)];
-                return { status: 'found', lesson: randomLesson };
-            }
-
-            const concluidosIds = userProgress.topicos_concluidos.map(t => t.id);
-            const naoEstudados = todosOsTopicosDisponiveis.filter(t => !concluidosIds.includes(t.id));
-
-            if (naoEstudados.length > 0) {
-                const randomLesson = naoEstudados[Math.floor(Math.random() * naoEstudados.length)];
-                return { status: 'found', lesson: randomLesson };
-            } else {
-                return { status: 'all_completed', lesson: null };
             }
         }
         
@@ -672,13 +485,12 @@
             const resultText = await callGeminiAPI(prompt);
             
             const isCorrect = resultText.includes('✅ Correct');
-            await registerProgress(isCorrect);
             
             const feedbackArea = document.createElement('div');
             feedbackArea.id = 'feedback-area';
             feedbackArea.className = `p-4 mt-4 rounded-lg text-white font-bold animate-fade-in`;
             feedbackArea.classList.add(isCorrect ? 'bg-green-500' : 'bg-red-500');
-            feedbackArea.textContent = isCorrect ? 'Correct Answer! +10 XP' : 'Almost there! +5 XP for trying.';
+            feedbackArea.textContent = isCorrect ? 'Correct Answer!' : 'Almost there! Keep trying.';
             lessonContentDiv.querySelector('.p-4.border').appendChild(feedbackArea);
         }
         
@@ -745,7 +557,7 @@
         async function getBetterExplanation() {
             if (!currentLesson) return;
             const { titulo, explicacao } = currentLesson;
-            const level = userProgress.nivel;
+            const level = levelSelect.value;
             showLoadingModal('Nova Explicação');
             
             try {
@@ -757,210 +569,6 @@
                 showModal('Erro', `<p class="text-red-500">Não foi possível gerar uma nova explicação. Tente novamente.</p>`);
             }
         }
-
-        function displayReviewList() {
-            const topicsForReview = getTopicsForReview();
-            if (topicsForReview.length === 0) return;
-
-            const listItems = topicsForReview.map(topic => `
-                <li class="border-b last:border-b-0">
-                    <button data-lesson-id="${topic.id}" class="review-item-btn w-full text-left p-4 hover:bg-gray-100">
-                        <span class="font-semibold text-indigo-700">${topic.id}</span>
-                        <span class="text-gray-600">(${topic.area} - Level ${topic.nivel})</span>
-                    </button>
-                </li>
-            `).join('');
-
-            lessonContentDiv.innerHTML = `
-                <div class="w-full animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Topics for Review</h2>
-                    <p class="text-gray-600 mb-6">These are the topics where you had some difficulty. Click one to review the lesson.</p>
-                    <ul class="bg-white rounded-lg border border-gray-200">${listItems}</ul>
-                </div>
-            `;
-        }
-
-        async function loadSpecificLesson(lessonId) {
-            if (isLoading) return;
-            isLoading = true;
-            showLoadingState(`Loading lesson ${lessonId} for review...`);
-            try {
-                const lessonsCollectionPath = `artifacts/${appId}/public/data/lessons`;
-                const lessonsRef = collection(db, lessonsCollectionPath);
-                const q = query(lessonsRef, where("id", "==", lessonId), limit(1));
-                const querySnapshot = await getDocs(q);
-
-                if (!querySnapshot.empty) {
-                    const lessonData = querySnapshot.docs[0].data();
-                    currentLesson = lessonData;
-                    currentLessonArea = lessonData.area;
-                    displayLesson(lessonData);
-                } else {
-                    showErrorState(`Could not find the lesson with ID ${lessonId}.`);
-                }
-            } catch (error) {
-                console.error("Error loading specific lesson:", error);
-                showErrorState(error.message);
-            } finally {
-                isLoading = false;
-            }
-        }
-
-        async function startAssessment(level) {
-            showLoadingState(`Preparing your final assessment for level ${level}...`);
-            try {
-                const questions = await generateAssessmentQuestions(level);
-                if (!questions || questions.length === 0) {
-                    showErrorState("Could not generate assessment questions.");
-                    return;
-                }
-                currentAssessment = questions;
-                currentQuestionIndex = 0;
-                assessmentScore = 0;
-                displayQuestion();
-            } catch (error) {
-                console.error("Error starting assessment:", error);
-                showErrorState(error.message);
-            }
-        }
-
-        async function generateAssessmentQuestions(level) {
-            const questionSchema = { type: "OBJECT", properties: { "area": { "type": "STRING" }, "pergunta": { "type": "STRING" }, "opcoes": { "type": "ARRAY", "items": { "type": "STRING" } }, "resposta_correta": { "type": "STRING" }, "explicacao": { "type": "STRING" } } };
-            const assessmentSchema = { type: "ARRAY", items: questionSchema };
-            const prompt = `You are an English examiner. Generate a final assessment of 8 multiple-choice questions IN ENGLISH for a Brazilian student at level ${level}. Cover all 4 areas (Grammar, Vocabulary, Pronunciation, Conversation), with 2 questions per area. The options and explanations must be clear and IN ENGLISH. Return a JSON array of objects following the schema.`;
-            
-            const responseText = await callGeminiAPI(prompt, assessmentSchema);
-            return JSON.parse(responseText);
-        }
-
-        function displayQuestion() {
-            const question = currentAssessment[currentQuestionIndex];
-            const progress = currentQuestionIndex + 1;
-            const total = currentAssessment.length;
-
-            const optionsHtml = question.opcoes.map(option => `
-                <button class="option-btn w-full text-left p-4 border rounded-lg hover:bg-indigo-100 transition">
-                    ${option}
-                </button>
-            `).join('');
-
-            lessonContentDiv.innerHTML = `
-                <div class="w-full animate-fade-in">
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-500">Final Assessment - Level ${userProgress.nivel}</p>
-                        <p class="font-semibold">Question ${progress} of ${total}</p>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
-                        <div class="bg-indigo-600 h-2.5 rounded-full" style="width: ${(progress / total) * 100}%"></div>
-                    </div>
-                    <div class="text-left">
-                        <p class="text-lg font-semibold mb-1">(${question.area})</p>
-                        <p class="text-xl mb-6">${question.pergunta}</p>
-                        <div class="space-y-3" id="options-container">${optionsHtml}</div>
-                        <div id="explanation-area" class="mt-4 p-3 rounded-lg text-sm hidden"></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function handleAssessmentAnswer(selectedOption, optionsContainer) {
-            const question = currentAssessment[currentQuestionIndex];
-            const isCorrect = selectedOption === question.resposta_correta;
-            
-            if(isCorrect) assessmentScore++;
-
-            Array.from(optionsContainer.children).forEach(btn => {
-                btn.disabled = true;
-                if (btn.innerText === question.resposta_correta) {
-                    btn.classList.add('correct');
-                } else if (btn.innerText === selectedOption) {
-                    btn.classList.add('incorrect');
-                }
-            });
-            
-            const explanationArea = document.getElementById('explanation-area');
-            explanationArea.textContent = question.explicacao;
-            explanationArea.classList.remove('hidden');
-            if (isCorrect) {
-                explanationArea.classList.add('bg-green-100', 'text-green-800');
-            } else {
-                explanationArea.classList.add('bg-red-100', 'text-red-800');
-            }
-
-            setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < currentAssessment.length) {
-                    displayQuestion();
-                } else {
-                    displayFinalResult();
-                }
-            }, 2500);
-        }
-
-        async function displayFinalResult() {
-            const scorePercent = Math.round((assessmentScore / currentAssessment.length) * 100);
-            const approved = scorePercent >= 70;
-            const nextLevel = getNextLevel(userProgress.nivel);
-
-            const assessmentResult = {
-                level: userProgress.nivel,
-                score: scorePercent,
-                date: new Date().toISOString()
-            };
-            userProgress.assessments = [...(userProgress.assessments || []), assessmentResult];
-            const progressDocRef = doc(db, `artifacts/${appId}/users/${userProgress.alunoId}/progress/data`);
-            await setDoc(progressDocRef, userProgress, { merge: true });
-
-            let resultHtml = `
-                <div class="text-center p-8 animate-fade-in">
-                    <h2 class="text-2xl font-bold">🎓 Final Assessment Complete!</h2>
-                    <p class="text-4xl font-bold my-4 ${approved ? 'text-green-600' : 'text-red-600'}">${scorePercent}% Score</p>
-                    <p class="text-gray-700">You answered ${assessmentScore} out of ${currentAssessment.length} questions correctly.</p>
-            `;
-
-            if (approved) {
-                resultHtml += `
-                    <p class="mt-4">Excellent work! You have demonstrated mastery of level ${userProgress.nivel}.</p>
-                    <div class="mt-6">
-                        <button class="level-up-btn btn btn-primary" data-next-level="${nextLevel}">🔼 Advance to Level ${nextLevel}</button>
-                    </div>
-                `;
-            } else {
-                resultHtml += `
-                    <p class="mt-4">Almost there! We recommend reviewing the topics where you had difficulty before trying again.</p>
-                    <div class="mt-6 flex justify-center gap-4">
-                        <button class="show-review-list-btn btn bg-yellow-400 text-yellow-900 hover:bg-yellow-500">Review Topics</button>
-                        <button class="retry-assessment-btn btn btn-secondary">Retry Assessment</button>
-                    </div>
-                `;
-            }
-            resultHtml += `</div>`;
-            lessonContentDiv.innerHTML = resultHtml;
-        }
-
-        function getNextLevel(currentLevel) {
-            const currentIndex = ALL_LEVELS.indexOf(currentLevel);
-            return currentIndex < ALL_LEVELS.length - 1 ? ALL_LEVELS[currentIndex + 1] : "C2";
-        }
-        
-        async function levelUpUser(newLevel) {
-            if (!userProgress) return;
-            userProgress.nivel = newLevel;
-            const progressDocRef = doc(db, `artifacts/${appId}/users/${userProgress.alunoId}/progress/data`);
-            await setDoc(progressDocRef, userProgress, { merge: true });
-            
-            lessonContentDiv.innerHTML = `
-                <div class="text-center p-8 animate-fade-in">
-                    <h2 class="text-2xl font-bold text-indigo-600">Level updated to ${newLevel}!</h2>
-                    <p class="text-gray-700 mt-2">You are ready for new challenges. Select an area of study to begin.</p>
-                </div>
-            `;
-        }
-
-        // ####################################################
-        // ### FIM DO CÓDIGO DO MÓDULO DE LIÇÕES (LESSONS) ###
-        // ####################################################
-
 
         // ############################################################
         // ### INÍCIO DO CÓDIGO DO MÓDULO DE CONVERSAÇÃO (CONVO) ###
@@ -1219,10 +827,6 @@
             };
         }
         
-        // ##########################################################
-        // ### FIM DO CÓDIGO DO MÓDULO DE CONVERSAÇÃO (CONVO) ###
-        // ##########################################################
-        
         // ############################################################
         // ### INÍCIO DO CÓDIGO DO MÓDULO DE FLASHCARDS ###
         // ############################################################
@@ -1334,13 +938,6 @@
             displayCurrentFlashcard();
         }
 
-        async function updateUserXP(points) {
-            if (!userProgress) return;
-            userProgress.estatisticas.xp += points;
-            const progressDocRef = doc(db, `artifacts/${appId}/users/${userProgress.alunoId}/progress/data`);
-            await setDoc(progressDocRef, userProgress, { merge: true });
-        }
-
         // ############################################################
         // ### INÍCIO DO CÓDIGO DO MÓDULO DE QUIZ ###
         // ############################################################
@@ -1355,7 +952,7 @@
 
         async function startQuiz() {
             quizArea.classList.remove('hidden');
-            showLoadingState('Gerando 7 perguntas únicas para você...', 'quiz');
+            showLoadingState('A gerar 7 perguntas únicas para si...', 'quiz');
             
             try {
                 const level = quizLevelSelect.value;
@@ -1420,7 +1017,6 @@
             
             if (isCorrect) {
                 quizScore++;
-                updateUserXP(10);
             }
 
             document.querySelectorAll('.quiz-option-btn').forEach(btn => {
@@ -1459,7 +1055,7 @@
                 <div class="text-center p-8 animate-fade-in">
                     <h2 class="text-2xl font-bold">🎉 Quiz Finalizado!</h2>
                     <p class="text-4xl font-bold my-4 text-indigo-600">${quizScore} / ${currentQuizQuestions.length}</p>
-                    <p class="text-gray-700">Você acertou ${quizScore} de ${currentQuizQuestions.length} perguntas e ganhou ${quizScore * 10} XP!</p>
+                    <p class="text-gray-700">Você acertou ${quizScore} de ${currentQuizQuestions.length} perguntas!</p>
                     <div class="mt-6">
                         <button id="btn-restart-quiz" class="btn btn-primary">🎲 Gerar Novo Quiz</button>
                     </div>
@@ -1468,33 +1064,15 @@
         }
 
 
-        // --- FUNÇÕES GLOBAIS E DE INICIALIZAÇÃO ---
+        // --- FUNÇÃO DE INICIALIZAÇÃO GERAL ---
         
-        async function init() {
+        function init() {
             try {
-                // Para a versão publicada, a autenticação Firebase pode ser opcional
-                // ou pode ser configurada com as regras de segurança do seu projeto.
-                // Por simplicidade, vamos permitir acesso anónimo.
-                if (Object.keys(firebaseConfig).length > 0) {
-                    const userCredential = initialAuthToken 
-                        ? await signInWithCustomToken(auth, initialAuthToken) 
-                        : await signInAnonymously(auth);
-                    
-                    console.log("Authentication successful. User ID:", userCredential.user.uid);
-                    setupProgressListener(userCredential.user.uid);
-                } else {
-                    console.warn("Firebase config not found. Progress will not be saved.");
-                    // Simular um objeto de progresso para a UI funcionar
-                    userProgress = { nivel: "A1", estatisticas: { acertos: 0, erros: 0, xp: 0 }, streak: { current: 0 } };
-                    renderProgressPanel();
-                }
-                
                 updateConvoThemes();
                 setupSpeechRecognition();
                 if (tts.onvoiceschanged !== undefined) {
                     tts.onvoiceschanged = tts.getVoices;
                 }
-
             } catch (error) {
                 console.error("Initialization failed:", error);
                 showErrorState("Failed to initialize the app. Please check the console for details.");
@@ -1525,26 +1103,11 @@
                 const textToSpeak = btn.dataset.text;
                 if(textToSpeak) playAudio(textToSpeak, btn);
             }
-            if (target.closest('.level-up-btn')) { levelUpUser(target.dataset.nextLevel); }
-            if (target.closest('.review-btn')) { loadLesson(true); }
-            if (target.closest('.review-item-btn')) { loadSpecificLesson(target.closest('.review-item-btn').dataset.lessonId); }
-            if (target.closest('.retry-assessment-btn')) { startAssessment(userProgress.nivel); }
-            if (target.closest('.show-review-list-btn')) { displayReviewList(); }
-            if (target.closest('.option-btn')) { handleAssessmentAnswer(target.innerText, target.parentElement); }
             if (target.closest('.btn-explain-better')) { getBetterExplanation(); }
         });
-
-        reviewPanel.addEventListener('click', (event) => {
-            if(event.target.closest('.show-review-list-btn')) { displayReviewList(); }
-        });
         
-        levelSelect.addEventListener('change', async () => {
-            if(userProgress) {
-                userProgress.nivel = levelSelect.value;
-                const progressDocRef = doc(db, `artifacts/${appId}/users/${userProgress.alunoId}/progress/data`);
-                await setDoc(progressDocRef, userProgress, { merge: true });
-                if(currentLessonArea) loadLesson();
-            }
+        levelSelect.addEventListener('change', () => {
+            if(currentLessonArea) loadLesson();
         });
 
         // Listeners para o módulo de conversação
@@ -1587,10 +1150,7 @@
         });
         btnNext.addEventListener('click', nextCard);
         btnPrev.addEventListener('click', prevCard);
-        btnCorrect.addEventListener('click', () => {
-            updateUserXP(5);
-            nextCard();
-        });
+        btnCorrect.addEventListener('click', nextCard);
         btnWrong.addEventListener('click', nextCard);
         flashcardsView.addEventListener('click', (e) => {
             if(e.target.closest('.tts-button')) {
@@ -1614,7 +1174,8 @@
             }
         });
         
-        init();
+        // Iniciar a aplicação quando a página carregar
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>

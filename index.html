@@ -285,44 +285,73 @@
         // --- FUNÇÕES GLOBAIS E DE INICIALIZAÇÃO ---
         
         /**
-         * Limpa e analisa uma string para extrair um objeto JSON.
-         * A IA por vezes retorna o JSON dentro de blocos de código markdown (```json ... ```) ou com texto extra.
+         * Limpa e analisa uma string para extrair um objeto JSON de forma robusta.
+         * A IA pode retornar o JSON dentro de blocos de código markdown (```json ... ```) ou com texto extra.
          * Esta função isola o JSON e analisa-o.
          * @param {string} text - A resposta de texto crua da IA.
          * @returns {object} O objeto JSON analisado.
          * @throws {Error} Se nenhum JSON válido for encontrado ou se a análise falhar.
          */
         function cleanAndParseJSON(text) {
-            // Remove blocos de código markdown e espaços em branco
-            const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            
-            // Encontra o primeiro '{' ou '[' e o último '}' ou ']'
-            const firstBracket = cleanedText.indexOf('{');
-            const firstSquareBracket = cleanedText.indexOf('[');
-            const lastBracket = cleanedText.lastIndexOf('}');
-            const lastSquareBracket = cleanedText.lastIndexOf(']');
-
-            let startIndex = -1;
-            if (firstBracket !== -1 && firstSquareBracket !== -1) {
-                startIndex = Math.min(firstBracket, firstSquareBracket);
-            } else if (firstBracket !== -1) {
-                startIndex = firstBracket;
-            } else {
-                startIndex = firstSquareBracket;
+            // Tenta encontrar um JSON dentro de um bloco de código markdown.
+            const jsonMatch = text.match(/```json\s*([\s\S]*?)\s*```/);
+            if (jsonMatch && jsonMatch[1]) {
+                try {
+                    return JSON.parse(jsonMatch[1]);
+                } catch (e) {
+                    console.error("Falha ao analisar o JSON do bloco de código:", e);
+                    // Continua para o próximo método se este falhar
+                }
             }
 
-            let endIndex = Math.max(lastBracket, lastSquareBracket);
-
-            if (startIndex === -1 || endIndex === -1) {
+            // Se não encontrar um bloco de código, procura pelo primeiro '{' ou '['
+            const firstBracket = text.indexOf('{');
+            const firstSquareBracket = text.indexOf('[');
+            
+            if (firstBracket === -1 && firstSquareBracket === -1) {
                 throw new Error("Não foi encontrado um objeto ou array JSON na resposta.");
             }
 
-            const jsonString = cleanedText.substring(startIndex, endIndex + 1);
+            let startIndex;
+            let startChar;
+            let endChar;
+
+            if (firstBracket !== -1 && (firstBracket < firstSquareBracket || firstSquareBracket === -1)) {
+                startIndex = firstBracket;
+                startChar = '{';
+                endChar = '}';
+            } else {
+                startIndex = firstSquareBracket;
+                startChar = '[';
+                endChar = ']';
+            }
+
+            let openBrackets = 0;
+            let endIndex = -1;
+
+            for (let i = startIndex; i < text.length; i++) {
+                if (text[i] === startChar) {
+                    openBrackets++;
+                } else if (text[i] === endChar) {
+                    openBrackets--;
+                }
+
+                if (openBrackets === 0) {
+                    endIndex = i;
+                    break;
+                }
+            }
+
+            if (endIndex === -1) {
+                throw new Error("JSON na resposta está incompleto ou mal formatado.");
+            }
+
+            const jsonString = text.substring(startIndex, endIndex + 1);
 
             try {
                 return JSON.parse(jsonString);
             } catch (e) {
-                console.error("Falha final ao analisar o JSON limpo:", e);
+                console.error("Falha final ao analisar o JSON extraído:", e);
                 console.error("String JSON que falhou:", jsonString);
                 throw new Error("Falha ao analisar a resposta JSON limpa da IA.");
             }
@@ -337,7 +366,7 @@
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
                 generationConfig: {
                     // Adiciona um pouco de criatividade para evitar respostas repetidas
-                    temperature: 0.7 
+                    temperature: 0.9
                 }
             };
 

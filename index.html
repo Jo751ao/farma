@@ -288,8 +288,51 @@
         
         // --- FUNÇÕES GLOBAIS E DE INICIALIZAÇÃO ---
         
+        /**
+         * Limpa e analisa uma string para extrair um objeto JSON.
+         * A IA por vezes retorna o JSON dentro de blocos de código markdown (```json ... ```) ou com texto extra.
+         * Esta função isola o JSON e analisa-o.
+         * @param {string} text - A resposta de texto crua da IA.
+         * @returns {object} O objeto JSON analisado.
+         * @throws {Error} Se nenhum JSON válido for encontrado ou se a análise falhar.
+         */
+        function cleanAndParseJSON(text) {
+            // Remove blocos de código markdown e espaços em branco
+            const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+            
+            // Encontra o primeiro '{' ou '[' e o último '}' ou ']'
+            const firstBracket = cleanedText.indexOf('{');
+            const firstSquareBracket = cleanedText.indexOf('[');
+            const lastBracket = cleanedText.lastIndexOf('}');
+            const lastSquareBracket = cleanedText.lastIndexOf(']');
+
+            let startIndex = -1;
+            if (firstBracket !== -1 && firstSquareBracket !== -1) {
+                startIndex = Math.min(firstBracket, firstSquareBracket);
+            } else if (firstBracket !== -1) {
+                startIndex = firstBracket;
+            } else {
+                startIndex = firstSquareBracket;
+            }
+
+            let endIndex = Math.max(lastBracket, lastSquareBracket);
+
+            if (startIndex === -1 || endIndex === -1) {
+                throw new Error("Não foi encontrado um objeto ou array JSON na resposta.");
+            }
+
+            const jsonString = cleanedText.substring(startIndex, endIndex + 1);
+
+            try {
+                return JSON.parse(jsonString);
+            } catch (e) {
+                console.error("Falha final ao analisar o JSON limpo:", e);
+                console.error("String JSON que falhou:", jsonString);
+                throw new Error("Falha ao analisar a resposta JSON limpa da IA.");
+            }
+        }
+
         async function callGeminiAPI(prompt, schema = null) {
-            // A sua chave de API está inserida aqui.
             const apiKey = "AIzaSyCqPeLEeLVgEBl8seSmI5ng-32F-ItfrLc";
 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
@@ -463,10 +506,15 @@
         }
         
         async function generateAILesson(level, area) {
-             const lessonSchema = { type: "OBJECT", properties: { "id": { "type": "STRING" }, "titulo": { "type": "STRING" }, "explicacao": { "type": "STRING" }, "exemplos": { "type": "ARRAY", "items": { "type": "STRING" } }, "exercicio": { "type": "STRING" }, "frase_repeticao": { "type": "STRING" }, "transcricao_ipa": { "type": "STRING" }, "traducao_frase": { "type": "STRING" } } };
-             const prompt = `You are an English teacher. Your task is to create ONE English lesson, IN ENGLISH, for a Brazilian student. Level: ${level}, Area: ${area}. Include a unique 'id' in the 'AI-XXXX' format. The response MUST be a JSON object. The JSON content (title, explanation, examples, etc.) MUST be in ENGLISH.`;
-             const responseText = await callGeminiAPI(prompt, lessonSchema);
-             return JSON.parse(responseText);
+            const lessonSchema = { type: "OBJECT", properties: { "id": { "type": "STRING" }, "titulo": { "type": "STRING" }, "explicacao": { "type": "STRING" }, "exemplos": { "type": "ARRAY", "items": { "type": "STRING" } }, "exercicio": { "type": "STRING" }, "frase_repeticao": { "type": "STRING" }, "transcricao_ipa": { "type": "STRING" }, "traducao_frase": { "type": "STRING" } } };
+            const prompt = `You are an English teacher. Create ONE English lesson, IN ENGLISH, for a Brazilian student. Level: ${level}, Area: ${area}. Return ONLY a valid JSON object that strictly adheres to the provided schema. Do not include any text before or after the JSON object.`;
+            try {
+                const responseText = await callGeminiAPI(prompt, lessonSchema);
+                return cleanAndParseJSON(responseText);
+            } catch (e) {
+                console.error("Falha ao gerar lição:", e);
+                throw new Error("A IA retornou um formato de lição inválido. Tente novamente.");
+            }
         }
 
         async function checkAnswerWithAI() {
@@ -631,11 +679,11 @@
                 }
             };
             
-            let prompt = `You are an advanced English tutor (ParlAI) simulating an oral conversation with a Brazilian student. Your entire response and conversation MUST be in ENGLISH. Level: ${level}. Theme: ${theme}. Conversation history: ${JSON.stringify(conversationLog)}. Your task is to analyze the student's last message ("${userMessage || ''}") or start the conversation. 1. Evaluate the student's grammar and pronunciation. Provide feedback IN ENGLISH. 2. Formulate a natural response ('fala_da_ia') IN ENGLISH to continue the dialogue. 3. Provide the IPA transcription for your own speech. 4. Return STRICTLY in the specified JSON format. The JSON content must be in ENGLISH.`;
-
+            const prompt = `You are an advanced English tutor (ParlAI) simulating a conversation with a Brazilian student. Level: ${level}. Theme: ${theme}. Conversation history: ${JSON.stringify(conversationLog)}. Your task is to analyze the student's last message ("${userMessage || ''}") or start the conversation. 1. Evaluate grammar and pronunciation. 2. Formulate a natural response ('fala_da_ia'). 3. Provide the IPA transcription for your speech. Return ONLY a valid JSON object that strictly adheres to the schema.`;
+            
             try {
                 const responseText = await callGeminiAPI(prompt, schema);
-                const aiData = JSON.parse(responseText);
+                const aiData = cleanAndParseJSON(responseText);
                 processAIResponse(aiData, studentTurnId);
             } catch (error) {
                 console.error("Erro na IA de conversação:", error);
@@ -739,11 +787,11 @@
                     "topicos_sugeridos": { "type": "ARRAY", "items": { "type": "STRING" } }
                 }
             };
-            const prompt = `You are an expert English tutor. Analyze the following conversation log between you (ia) and a student (aluno). The student is at level ${convoLevelSelect.value}. Provide a concise summary, identify the student's strengths, point out specific areas for improvement with suggestions, and recommend 2-3 topics for future study. The entire analysis must be in ENGLISH. Conversation Log: ${JSON.stringify(conversationLog)}`;
-
+            const prompt = `You are an expert English tutor. Analyze the following conversation log. The student is at level ${convoLevelSelect.value}. Provide a concise summary, identify strengths, point out areas for improvement with suggestions, and recommend topics for future study. The analysis must be in ENGLISH. Return ONLY a valid JSON object. Conversation Log: ${JSON.stringify(conversationLog)}`;
+            
             try {
                 const responseText = await callGeminiAPI(prompt, schema);
-                const analysis = JSON.parse(responseText);
+                const analysis = cleanAndParseJSON(responseText);
                 
                 const strengthsHtml = analysis.pontos_fortes.map(item => `<li class="flex items-start"><span class="text-green-500 mr-2">✓</span><span>${item}</span></li>`).join('');
                 const improvementsHtml = analysis.areas_a_melhorar.map(item => `<li class="mb-2"><p><span class="text-red-500 mr-2">✗</span><strong>Mistake:</strong> ${item.erro}</p><p class="ml-4 text-gray-600"><strong>Suggestion:</strong> ${item.sugestao}</p></li>`).join('');
@@ -855,11 +903,11 @@
                     properties: { "ingles": { "type": "STRING" }, "portugues": { "type": "STRING" } }
                 }
             };
-            const prompt = `You are an English vocabulary expert. Generate a list of 20 common and useful English vocabulary words for a Brazilian student at the ${level} level. Provide a diverse mix of nouns, verbs, and adjectives. For each word, provide its Portuguese translation. Return a valid JSON array of objects.`;
-
+            const prompt = `You are an English vocabulary expert. Generate a list of 20 useful English vocabulary words for a student at the ${level} level. Provide the Portuguese translation. Return ONLY a valid JSON array of objects.`;
+            
             try {
                 const responseText = await callGeminiAPI(prompt, schema);
-                currentDeck = JSON.parse(responseText);
+                currentDeck = cleanAndParseJSON(responseText);
                 currentFlashcardIndex = 0;
                 displayCurrentFlashcard();
                 flashcardControls.classList.remove('hidden');
@@ -969,10 +1017,15 @@
         async function generateQuizQuestionsWithAI(level) {
             const questionSchema = { type: "OBJECT", properties: { "pergunta": { "type": "STRING" }, "alternativas": { type: "OBJECT", properties: { "A": { "type": "STRING" }, "B": { "type": "STRING" }, "C": { "type": "STRING" }, "D": { "type": "STRING" }, "E": { "type": "STRING" } } }, "correta": { "type": "STRING" }, "explicacao": { "type": "STRING" } } };
             const quizSchema = { type: "ARRAY", maxItems: 7, minItems: 7, items: questionSchema };
-            const prompt = `Você é um examinador de inglês. Gere um quiz de 7 perguntas de múltipla escolha IN ENGLISH para um aluno brasileiro do nível ${level}. Cada pergunta deve ter 5 alternativas (A, B, C, D, E). As perguntas devem ser únicas e cobrir uma variedade de tópicos (gramática, vocabulário, etc.). A alternativa correta deve ser apenas a letra. A explicação deve ser curta, clara e em inglês. Retorne um array JSON com 7 objetos.`;
+            const prompt = `You are an English examiner. Generate a quiz of 7 multiple-choice questions IN ENGLISH for a student at level ${level}. Each question must have 5 alternatives (A, B, C, D, E). The correct answer must be only the letter. The explanation must be short, clear, and in English. Return ONLY a valid JSON array of 7 objects.`;
             
-            const responseText = await callGeminiAPI(prompt, quizSchema);
-            return JSON.parse(responseText);
+            try {
+                const responseText = await callGeminiAPI(prompt, quizSchema);
+                return cleanAndParseJSON(responseText);
+            } catch (error) {
+                console.error("Erro ao gerar quiz:", error);
+                throw new Error("A IA retornou um formato de quiz inválido. Tente novamente.");
+            }
         }
 
         function displayQuizQuestion() {
